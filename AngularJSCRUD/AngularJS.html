@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+    <title>Angular JS CRUD</title>
+	<meta charset="utf-8" />
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+
+</head>
+<body ng-controller="productController">
+
+    <table cellpadding="2" cellspacing="2" border="1">
+        <tr>
+
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Salary</th>
+            <th>Option</th>
+
+        </tr>
+
+        <tr ng-repeat="Employee in listEmploye">
+
+            <td>{{Employee.id}}</td>
+            <td>{{Employee.FName}}</td>
+            <td>{{Employee.LName}}</td>
+            <td>{{Employee.Salary}}</td>
+            <td>
+                <a href="#" ng-click="del(Employee.id)">Delete</a> |
+                <a href="#" ng-click="selectEdit(Employee.id)">Edit</a>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Employee Information</h3>
+    <table cellpadding="2" cellspacing="2">
+        <tr>
+            <td>Employee Id</td>
+            <td><input type="text" ng-model="id" /></td>
+        </tr>
+        <tr>
+            <td>First Name</td>
+            <td><input type="text" ng-model="FName" /></td>
+        </tr>
+        <tr>
+            <td>Last Name</td>
+            <td><input type="text" ng-model="LName" /></td>
+        </tr>
+        <tr>
+            <td>Salary</td>
+            <td><input type="text" ng-model="Salary" /></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="button" value="Add" ng-click="add()" />
+            <input type="button" value="Save" ng-click="edit()" /></td>
+        </tr>
+
+    </table>
+
+    <script type="text/javascript">
+
+        var myapp = angular.module('myapp', []);
+        myapp.controller('productController', function ($scope)
+        {
+            $scope.listEmploye = [
+                { id: '100', FName: 'Jagan', LName: 'Paudel', Salary: '6000' },
+                { id: '101', FName: 'Jesus', LName: 'Christ', Salary: '7000' },
+                { id: '102', FName: 'Nancy', LName: 'Albo', Salary: '8000' },
+                { id: '103', FName: 'Srishti', LName: 'Mishra', Salary: '9000' },
+
+            ];
+
+            $scope.add = function () {
+                $scope.listEmploye.push({
+                    id: $scope.id, FName: $scope.FName, LName: $scope.LName, Salary: $scope.Salary
+                });
+                $scope.id = '';
+                $scope.FName = '';
+                $scope.LName = '';
+                $scope.Salary = '';
+            };
+
+            $scope.edit = function () {
+                var index = getSelectedIndex($scope.id);
+                $scope.listEmploye[index].FName = $scope.FName;
+                $scope.listEmploye[index].LName = $scope.LName;
+                $scope.listEmploye[index].Salary = $scope.Salary;
+            };
+
+            $scope.selectEdit = function (id) {
+                var index = getSelectedIndex(id);
+                var employee = $scope.listEmploye[index];
+                $scope.id = employee.id;
+                $scope.FName = employee.FName;
+                $scope.LName = employee.LName;
+                $scope.Salary = employee.Salary;
+            };
+
+            $scope.del = function (id) {
+                var result = confirm('Are you sure');
+                if (result == true)
+                {
+                    var index = getSelectedIndex(id);
+                    $scope.listEmploye.splice(index, 1);
+                }
+            };
+
+            function getSelectedIndex(id)
+            {
+                for (var i = 0; i < $scope.listEmploye.length; i++)
+                    if ($scope.listEmploye[i].id == id)
+                        return i;
+                return -1;
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
